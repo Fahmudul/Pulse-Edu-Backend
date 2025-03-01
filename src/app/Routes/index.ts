@@ -11,18 +11,6 @@ const applicationRoutes = [
     path: "/auth",
     route: AuthRoutes,
   },
-  {
-    path: "/project",
-    route: ProjectRoutes,
-  },
-  {
-    path: "/blog",
-    route: BlogRoutes,
-  },
-  {
-    path: "/message",
-    route: MessageRoutes,
-  },
 ];
 applicationRoutes.forEach((route) => router.use(route.path, route.route));
 export default router;

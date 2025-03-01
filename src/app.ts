@@ -2,7 +2,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import router from "./app/Routes";
+import dotenv from "dotenv";
 import globalErrorHandler from "./app/Errors/globalErrorHandler";
+dotenv.config()
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
