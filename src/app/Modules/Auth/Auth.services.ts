@@ -3,7 +3,10 @@ import CustomError from "../../Errors/CustomError";
 import { TUser } from "./Auth.interface";
 import user from "./Auth.model";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import Config from "../../Config";
 const LoginUser = async (payload: Pick<TUser, "email" | "password">) => {
+  console.log("from line 9 ", payload);
   // Checking If user exists or not
   const isUserExists = await user.findOne({ email: payload.email });
   if (!isUserExists) {
@@ -17,7 +20,29 @@ const LoginUser = async (payload: Pick<TUser, "email" | "password">) => {
   if (!isPasswordMatched) {
     throw new CustomError("Invalid credentials", httpStatus.UNAUTHORIZED);
   }
-  return { ...isUserExists.toObject(), password: "" };
+  const tokenPayload = {
+    id: isUserExists?._id,
+    email: isUserExists?.email,
+    name: isUserExists?.name,
+    role: isUserExists?.role,
+  };
+  console.log(tokenPayload);
+  // Access and refresh  token generate
+  const accessToken = jwt.sign(tokenPayload, Config.JWT_ACCESS_SECRET as string, {
+    expiresIn: "1d",
+  });
+  const refreshToken = jwt.sign(
+    tokenPayload,
+    Config.JWT_REFRESH_SECRET as string,
+    {
+      expiresIn: "365d",
+    }
+  );
+  const decodedData = jwt.decode(accessToken);
+  // const decodedData2 = jwt.decode(refreshToken);
+  console.log({ decodedData});
+  // console.log("from service", isUserExists.toObject());
+  return { accessToken, refreshToken };
 };
 
 const RegisterUser = async (
