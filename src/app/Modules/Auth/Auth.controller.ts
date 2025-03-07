@@ -16,6 +16,7 @@ const LoginUser = catchAsync(async (req, res) => {
 const RegisterUser = catchAsync(async (req, res) => {
   const response = await AuthServices.RegisterUser(req.body);
   console.log("user hitting");
+  
   sendResponse(res, {
     statusCode: httpStatus.OK,
     message: " User registered successfully",

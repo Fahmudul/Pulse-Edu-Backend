@@ -7,7 +7,6 @@ const userModel = new Schema<TUser>(
     email: { type: String, required: true },
     password: { type: String },
     role: { type: String, required: true, default: "user" },
-    image: { type: String },
   },
   {
     timestamps: true,
@@ -15,5 +14,5 @@ const userModel = new Schema<TUser>(
   }
 );
 
-const user = model<TUser>("Users", userModel);
-export default user;
+const User = model<TUser>("Users", userModel);
+export default User;

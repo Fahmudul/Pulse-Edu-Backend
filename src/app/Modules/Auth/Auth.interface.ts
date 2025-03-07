@@ -3,5 +3,9 @@ export type TUser = {
   email: string;
   password?: string;
   role: string;
-  image: string;
+  provider?: string;
+  canAccess?: boolean;
+  isBlocked?: boolean;
+  googleAccessToken?: string;
+  googleRefreshToken?: string;
 };
