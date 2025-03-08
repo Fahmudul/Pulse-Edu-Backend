@@ -11,9 +11,13 @@ const teacherSchema = new Schema<ITeacher>({
   image: { type: String },
   user: {
     type: Schema.Types.ObjectId,
-    ref:"Users"
+    ref: "Users",
   },
   availability: { type: Object },
+  balance: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Teacher = model<ITeacher>("Teacher", teacherSchema);

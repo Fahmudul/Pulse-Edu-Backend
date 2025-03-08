@@ -29,10 +29,8 @@ const ConfirmPayment = async (payload: IPaymentPayload) => {
   if (!existingBooking) {
     throw new CustomError("Booking not found", httpStatus.NOT_FOUND);
   }
-  const teacherGoogleAccessToken = await Teacher.findById(
-    existingBooking.teacher
-  );
-  console.log("access token", teacherGoogleAccessToken); 
+  const foundTeacher = await Teacher.findById(existingBooking.teacher);
+  // console.log("access token", foundTeacher);
   const student = await User.findById(payload.student);
   console.log("student", student);
   const sendMailPayload = {
@@ -59,7 +57,7 @@ const ConfirmPayment = async (payload: IPaymentPayload) => {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${teacherGoogleAccessToken?.googleAccessToken}`,
+          Authorization: `Bearer ${foundTeacher?.googleAccessToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(existingBooking.event),
@@ -82,16 +80,29 @@ const ConfirmPayment = async (payload: IPaymentPayload) => {
     // Update booking session status
     existingBooking.status = "Accepted";
     const result = await existingBooking.save();
-    if(!result){
-      throw new CustomError("Failed to update status", httpStatus.NOT_MODIFIED)
+    if (!result) {
+      throw new CustomError("Failed to update status", httpStatus.NOT_MODIFIED);
     }
     // Create payment history
-  
+
     const res = await Payment.create(payload);
     if (!res) {
       throw new CustomError("Payment failed", httpStatus.BAD_REQUEST);
     }
-    console.log("history", res);
+
+    // Update Teacher balance
+    const teacherBalance = await Teacher.findOneAndUpdate(
+      { _id: existingBooking.teacher },
+      { $inc: { balance: payload.price } },
+      { new: true }
+    );
+    if (!teacherBalance) {
+      throw new CustomError(
+        "Failed to update teacher balance",
+        httpStatus.NOT_MODIFIED
+      );
+    }
+
     await session.commitTransaction();
     return res;
   } catch (error) {

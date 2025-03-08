@@ -22,4 +22,5 @@ export interface ITeacher {
   availability: IAvailability;
   description?: string;
   hourlyRate?: number;
+  balance :number;
 }
