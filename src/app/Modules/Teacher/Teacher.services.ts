@@ -91,11 +91,35 @@ const getSingleTeacher = async (id: string) => {
   const res = await Teacher.findById(id).populate("user");
   return res;
 };
+const getTeacherCalendar = async (id: string) => {
+  const res = await Teacher.findById(id);
+  const googleAccessToken = res?.googleAccessToken;
+  const eventsResponse = await fetch(
+    "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+    {
+      headers: {
+        Authorization: `Bearer ${googleAccessToken}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const events = await eventsResponse.json();
+  console.log("teacher events", events);
+  const modifiedResponse = events.items.map((item: any) => ({
+    title: item.summary,
+    description: item.description,
+    start: new Date(item.start.dateTime),
+    end: new Date(item.end.dateTime),
+  }));
+  console.log("modified ", modifiedResponse);
+  return modifiedResponse;
+};
 export const TeacherServices = {
   SaveAvailabilityInDB,
   GetTeacherDetails,
   GetAvailability,
   GetAllTeacher,
   GetMeTeacherDetails,
-  getSingleTeacher
+  getSingleTeacher,
+  getTeacherCalendar,
 };

@@ -13,6 +13,7 @@ router.get(
   TeacherControllers.GetAvailability
 );
 router.get("/:id", TeacherControllers.getSingleTeacher);
+router.get("/get-teacher-calendar/:id", TeacherControllers.getTeacherCalendar);
 router.get("/", TeacherControllers.GetAllTeacher);
 
 export const TeacherRoutes = router;

@@ -17,7 +17,7 @@ const SaveAvailability = catchAsync(async (req, res) => {
 
 const GetTeacherDetails = catchAsync(async (req, res) => {
   const result = await TeacherServices.GetTeacherDetails(req.params.id);
-  
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     message: " Teacher details retrieved successfully",
@@ -64,11 +64,21 @@ const getSingleTeacher = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getTeacherCalendar = catchAsync(async (req, res) => {
+  const result = await TeacherServices.getTeacherCalendar(req.params.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    message: " Teacher retrieved successfully",
+    success: true,
+    data: result,
+  });
+});
 export const TeacherControllers = {
   SaveAvailability,
   GetTeacherDetails,
   GetAvailability,
   GetAllTeacher,
   GetMeTeacherDetails,
-  getSingleTeacher
+  getSingleTeacher,
+  getTeacherCalendar,
 };
