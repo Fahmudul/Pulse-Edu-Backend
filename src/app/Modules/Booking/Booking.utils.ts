@@ -1,6 +1,6 @@
 export function formatDate(timestamp: string) {
   // Remove the trailing 'Z' if present
-  timestamp = timestamp.replace("Z", "");
+  timestamp = timestamp?.replace("Z", "");
 
   const datePart = timestamp.split("T")[0];
 

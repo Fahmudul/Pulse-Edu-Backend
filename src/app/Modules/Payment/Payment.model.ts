@@ -4,7 +4,7 @@ import { IPayment } from "./Payment.interface";
 const paymentSchema = new Schema<IPayment>(
   {
     student: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
     },
     teacher: {
@@ -14,7 +14,6 @@ const paymentSchema = new Schema<IPayment>(
     status: {
       type: String,
     },
-
     courseName: {
       type: String,
       required: true,

@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import catchAsync from "../../Utils/catchAsync";
 import { sendResponse } from "../../Utils/sendResponse";
 import { TeacherServices } from "./Teacher.services";
+import Teacher from "./Teacher.model";
 // import { AuthServices } from "./Auth.services";
 
 const SaveAvailability = catchAsync(async (req, res) => {
@@ -47,7 +48,7 @@ const GetAvailability = catchAsync(async (req, res) => {
 });
 
 const GetAllTeacher = catchAsync(async (req, res) => {
-  const result = await TeacherServices.GetAllTeacher(req.params.email);
+  const result = await TeacherServices.GetAllTeacher(req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     message: " Teacher retrieved successfully",
@@ -73,6 +74,35 @@ const getTeacherCalendar = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const UpdateInformation = catchAsync(async (req, res) => {
+  const result = await TeacherServices.UpdateInformation(req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    message: "Information updated successfully",
+    success: true,
+    data: result,
+  });
+});
+const CreateSubject = catchAsync(async (req, res) => {
+  const result = await TeacherServices.CreateSubject(req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    message: " Subject created successfully",
+    success: true,
+    data: result,
+  });
+});
+
+const getPaymentDetails = catchAsync(async (req, res) => {
+  const result = await TeacherServices.getPaymentDetails(req.params.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    message: " Payment details retrieved successfully",
+    success: true,
+    data: result,
+  });
+});
+
 export const TeacherControllers = {
   SaveAvailability,
   GetTeacherDetails,
@@ -81,4 +111,7 @@ export const TeacherControllers = {
   GetMeTeacherDetails,
   getSingleTeacher,
   getTeacherCalendar,
+  UpdateInformation,
+  CreateSubject,
+  getPaymentDetails,
 };

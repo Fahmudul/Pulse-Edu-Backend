@@ -85,7 +85,10 @@ const ConfirmPayment = async (payload: IPaymentPayload) => {
     }
     // Create payment history
 
-    const res = await Payment.create(payload);
+    const res = await Payment.create({
+      ...payload,
+      teacher: existingBooking.teacher,
+    });
     if (!res) {
       throw new CustomError("Payment failed", httpStatus.BAD_REQUEST);
     }
@@ -114,7 +117,17 @@ const ConfirmPayment = async (payload: IPaymentPayload) => {
     await session.endSession();
   }
 };
+
+export const getAllPayment = async (id: string) => {
+  console.log("id from service", id);
+  const student = await Student.findOne({ user: id });
+  const res = await Payment.find({ student: id }).select(
+    "currency price paymentId method courseName createdAt"
+  );
+  return res;
+};
 export const PaymentServices = {
   CreateCheckOutSession,
   ConfirmPayment,
+  getAllPayment,
 };

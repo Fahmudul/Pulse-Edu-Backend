@@ -23,4 +23,6 @@ export interface ITeacher {
   description?: string;
   hourlyRate?: number;
   balance :number;
+  canAccess:boolean;
+  available?:boolean;
 }

@@ -1,4 +1,3 @@
-import { ISubject } from "./Student.interface";
 import Subject from "./Student.model";
 
 const CreateSubject = async (payload: any) => {

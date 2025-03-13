@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export interface IPayment {
   price: number;
   paymentId: string;
-  student: string;
+  student: mongoose.Types.ObjectId;
   teacher: string;
   courseName: string;
   status: string;

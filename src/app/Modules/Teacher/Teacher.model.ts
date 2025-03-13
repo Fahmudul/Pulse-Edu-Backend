@@ -5,7 +5,6 @@ const teacherSchema = new Schema<ITeacher>({
   name: { type: String },
   email: { type: String, required: true },
   googleAccessToken: { type: String },
-  googleid: { type: String },
   phone: { type: String },
 
   image: { type: String },
@@ -13,10 +12,31 @@ const teacherSchema = new Schema<ITeacher>({
     type: Schema.Types.ObjectId,
     ref: "Users",
   },
-  availability: { type: Object },
+  availability: {
+    type: Object,
+    default: {
+      sunday: [],
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+    },
+  },
   balance: {
     type: Number,
     default: 0,
+  },
+  canAccess: {
+    type: Boolean,
+    default: true,
+  },
+  available: {
+    type: Boolean,
+  },
+  hourlyRate: {
+    type: Number,
   },
 });
 

@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import CustomError from "../../Errors/CustomError";
-import { IBooking, TSchedule, TScheduleItem } from "./Booking.interface";
+import { IBooking, TScheduleItem } from "./Booking.interface";
 
 import Teacher from "../Teacher/Teacher.model";
 import Booking from "./Booking.model";
@@ -49,7 +49,7 @@ const GetSingleBooking = async (id: string) => {
     student: id,
     $or: [{ status: "Pending" }, { status: "In progress" }],
   }).populate("subject teacher student");
-  const newRes = res?.toObject();
+  const newRes = res?.toObject() as any;
   console.log("current shape", res);
   const schedule: TScheduleItem[] = [];
   if (newRes?.schedule) {
@@ -63,7 +63,7 @@ const GetSingleBooking = async (id: string) => {
   }
   const startDate = newRes?.event.start.dateTime.split("T")[0];
   const timeStamp = newRes?.event.recurrence[0].split(";")[2].split("=")[1];
-  const endDate = formatDate(timeStamp!); 
+  const endDate = formatDate(timeStamp!);
   // console.log("time stamp", newRes?.teacher.hourlyRate);
   const modifiedResponse = {
     bookingId: newRes?._id,

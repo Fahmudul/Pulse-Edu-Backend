@@ -22,7 +22,18 @@ const ConfirmPayment = catchAsync(async (req, res) => {
   });
 });
 
+export const getAllPayment = catchAsync(async (req, res) => {
+  const response = await PaymentServices.getAllPayment(req.params.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Payment Retrieved... 😎",
+    data: response,
+  });
+});
+
 export const PayemntController = {
   createCheckOutSession,
   ConfirmPayment,
+  getAllPayment,
 };
